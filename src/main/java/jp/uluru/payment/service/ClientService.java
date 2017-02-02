@@ -45,4 +45,11 @@ public class ClientService {
 		Client client = clientRepository.findOne(id);
 		clientRepository.delete(client);
 	}
+
+	public Client getClientByApiTokenTest(String token) {
+		return clientRepository.findByApiTokenTest(token);
+	}
+	public Client getClientByApiTokenLive(String token) {
+		return clientRepository.findByApiTokenLive(token);
+	}
 }

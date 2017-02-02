@@ -2,7 +2,6 @@ package jp.uluru.payment.resource;
 
 import java.util.List;
 
-import javax.servlet.annotation.WebFilter;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -19,8 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jp.uluru.payment.model.Bank;
+import jp.uluru.payment.model.Client;
 import jp.uluru.payment.service.BankService;
-
 
 @Path("/banks")
 @Consumes(value = { MediaType.APPLICATION_JSON, MediaType.TEXT_XML })
@@ -30,9 +29,14 @@ public class BankResource {
 	@Autowired
 	BankService bankService;
 
+	@Context
+	SecurityContext securityContext;
+
 	@GET
 	public List<Bank> getAllbanks() {
 		List<Bank> banks = bankService.getAllbanks();
+		Client client = (Client) securityContext.getUserPrincipal();
+		System.out.println(client.getName());
 		return banks;
 	}
 
@@ -52,7 +56,7 @@ public class BankResource {
 	public Bank getAbank(@PathParam(value = "id") int id, @RequestParam(name = "bank") Bank bank) {
 		return bankService.update(id, bank);
 	}
-	
+
 	@DELETE
 	@Path("/{id}")
 	public void deleteAbank(@PathParam(value = "id") int id) {
@@ -60,11 +64,12 @@ public class BankResource {
 	}
 
 	@GET
-    @Produces(value=MediaType.TEXT_PLAIN)
-    @Path("/hello")
-    public String sayHello(@Context SecurityContext sc) {
-		System.out.println("BankResource.sayHello() : "+sc.toString());
-            if (sc.isUserInRole("admin"))  return "Hello World!";
-            throw new SecurityException("User is unauthorized.");
-    }
+	@Produces(value = MediaType.TEXT_PLAIN)
+	@Path("/hello")
+	public String sayHello(@Context SecurityContext sc) {
+		System.out.println("BankResource.sayHello() : " + sc.toString());
+		if (sc.isUserInRole("admin"))
+			return "Hello World!";
+		throw new SecurityException("User is unauthorized.");
+	}
 }

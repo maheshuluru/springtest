@@ -17,5 +17,6 @@ public class JerseyConfig extends ResourceConfig{
 	private void init() {
 		registerClasses(ClientResource.class);
 		registerClasses(BankResource.class);
+		register(MySecurityFilter.class) ; 
 	}
 }

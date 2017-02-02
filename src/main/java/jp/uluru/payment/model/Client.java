@@ -1,5 +1,6 @@
 package jp.uluru.payment.model;
 
+import java.security.Principal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -11,10 +12,11 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
+
 @Entity
 @Table(name = "clients")
 @XmlRootElement
-public class Client {
+public class Client implements Principal{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
